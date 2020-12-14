@@ -1,4 +1,4 @@
-## This is a simple Crud application with create update delete , search and pagination features.
+## This is a simple search with create update delete and pagination features.
 
 
 ## To run this project :
