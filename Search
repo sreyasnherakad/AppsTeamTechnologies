@@ -1,0 +1,45 @@
+echo "# AppsTeamTechnologies" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/sreyasnherakad/AppsTeamTechnologies.git
+git push -u origin main
+
+<ul class="items">
+  <?php
+    $options = array(
+      'quantity'  => 20, // how many item to display for each page
+      'around'    => 2,  // how many page btn to show around the current page btn
+      'directory' => 'files/tbn-test', // dir to scan for items
+    );
+
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $offset = ($page - 1) * $options['quantity']; // $page base index is 1
+    $filelist = scandir($options['directory']);
+
+     //get subset of file array
+    $selectedFiles = array_slice($filelist, $offset, $options['quantity']);
+
+    foreach ($selectedFiles as $file) {
+      $path = $options['directory'] . '/' . $file;
+      if (is_array(getimagesize($path))) {
+        echo '<li class="item"><img src="'. $path .'"></li>';
+      }
+    }
+  ?>
+</ul>
+<div class="pagination">
+  <a class="btn" <?= $page <= 1 ? 'disabled' : '' ?> href="?page=<?= $page - 1 ?>">&larr;</a>
+  <?php
+    $len = count($filelist) / $options['quantity'];
+    for ($i = 1; $i < $len + 1; $i++) {
+      if (($i == 1 || $i > $len) || ($i > $page - $options['around'] && $i < $page + $options['around'])) {
+        echo '<a class="btn '. ($page == $i ? 'active' : '') .'" href="?page='.$i.'">'. $i .'</a>';
+      } elseif ($i > $page - $options['around'] - 1 && $i < $page + $options['around'] + 1) {
+        echo '<a disabled class="btn">&hellip;</a>';
+      }
+    }
+  ?>
+  <a class="btn" <?= $page >= $len ? 'disabled' : '' ?> href="?page=<?= $page + 1 ?>">&rarr;</a>
+</div>
